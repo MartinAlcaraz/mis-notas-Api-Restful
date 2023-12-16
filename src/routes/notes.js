@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.get('/', [ verifyToken, validateGetAllNotes ], notesCtrl.getAllNotes)
     .get('/:id',validateGetOneNote ,notesCtrl.getOneNote)
-    // // query predefinida en productsCtrl.getBestProducts
     .post('/', [ verifyToken, validateCreateNote ], notesCtrl.createNote)
     .put('/:id', [ verifyToken, validateUpdateNote ], notesCtrl.updateNote)
     .delete('/:id', [ verifyToken, validateDeleteNote ], notesCtrl.deleteNote)

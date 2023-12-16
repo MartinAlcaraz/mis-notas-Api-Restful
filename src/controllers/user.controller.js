@@ -7,9 +7,7 @@ const userCtrl = {};
 
 userCtrl.getUsers = asyncErrorHandler(async (req, res, next) => {
 
-    const users = await User.find({},{ email: 1, username: 1, roles: 1}).populate({path: "roles", select: "name -_id"});
-    // const users = await User.find();
-    // const result = await User.populate(users, {path: "roles", select: "name -_id"});
+    const users = await User.find({},{ email: 1, username: 1 });
 
     res.status(200).json({ status: "OK", length: users.length, data: { users } });
 })

@@ -5,7 +5,6 @@ import morgan from "morgan";
 import "./database.js";
 import router from "./routes/index.js"
 import cookieParser from "cookie-parser";
-// import bodyParser from "body-parser";
 import path from 'path';
 
 const app = express();
@@ -25,11 +24,12 @@ app.use(function (req, res, next) {
 });
 
 app.use(cookieParser());
+
 app.use(morgan("dev")); // imprime las solicitudes http en consola
 
 app.use(express.json({limit: "3mb"})); // para que entienda los objetos JSON y limitar su tamaño.
 
-app.use(express.urlencoded({extended: false, limit: "6mb"})); // para limitar la subida de imagenes pesadas
+app.use(express.urlencoded({extended: true, limit: "6mb"})); // para limitar la subida de imagenes pesadas
 
 // static files
 const __actualDir = __dirname; // directorio actual

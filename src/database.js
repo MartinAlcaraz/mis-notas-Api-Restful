@@ -8,7 +8,7 @@ dotenv.config();
 
 if(process.env.NODE_ENV == "development") {
     // mongodb_uri = "mongodb://localhost/mis-notas";
-    mongodb_uri = process.env.MONGO_DB_URI_LOCAL;
+    mongodb_uri = process.env.MONGO_DB_LOCAL;
 }else{
     mongodb_uri= process.env.MONGO_DB_URI;
 }

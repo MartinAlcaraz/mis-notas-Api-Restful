@@ -4,6 +4,7 @@ import createToken from "../Utils/createToken.js";
 import asyncErrorHandler from "../Utils/asyncErrorHandler.js";
 import mail from "../Utils/email.js";
 import crypto from 'crypto';
+import CustomError from "../Utils/CustomError.js";
 
 const authCtrl = {};
 
@@ -11,12 +12,19 @@ authCtrl.createUser = asyncErrorHandler(async (req, res, next) => {
 
     const { username, email, password } = req.body;
 
-    const userFound = await User.find({ $or: [{ username }, { email }] });
-    // const userFound = await User.find({ email });
+    const usernameFound = await User.find({ username: new RegExp('^'+username+'$', 'i') });
 
-    // comprueba si ya existe un usuario con el username ó email ingresado
-    if (userFound.length > 0) {
-        const err = new CustomError("The username or email alredy exists, use another.", 409);
+    // comprueba si ya existe un usuario con el username ingresado
+    if (usernameFound.length > 0) {
+        const err = new CustomError("The username alredy exists, use another.", 409);
+        return next(err);
+    }
+    
+    const usermailFound = await User.find({ email: email });
+
+    // comprueba si ya existe un usuario con el email ingresado
+    if (usermailFound.length > 0) {
+        const err = new CustomError("The email alredy exists, use another.", 409);
         return next(err);
     }
 

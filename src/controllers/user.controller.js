@@ -16,14 +16,22 @@ userCtrl.getUsers = asyncErrorHandler(async (req, res, next) => {
 userCtrl.getOneUser = asyncErrorHandler(async (req, res, next) => {
 
     // const user = await User.findById(req.user_id, {username: 1, email: 1, roles: 1}).populate({path: "roles", select: "name -_id"});
-    const user = await User.findById(req.user_id);
+    const user = await User.findById(req.user_id).select("username email createdAt -_id");
 
     if ( !user ) {
         const err = new CustomError("User not found", 404);
         return next(err);
     }
 
-    res.status(200).json({ status: "OK", data: { user } });
+    // convierte Date a String
+    let dateAux = user.createdAt;
+    let dateStr = dateAux.toISOString();
+
+    dateStr = dateStr.slice(0, dateStr.indexOf("T")); // devuelve "2024-01-06"
+
+    const userAux = { username: user.username, email: user.email, createdAt: dateStr };
+
+    res.status(200).json({ status: "OK", data: { user: userAux } });
 
 });
 

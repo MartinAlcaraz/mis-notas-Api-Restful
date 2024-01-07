@@ -15,14 +15,15 @@ userCtrl.getUsers = asyncErrorHandler(async (req, res, next) => {
 // params :username // solo devuelve los datos del usuario logueado
 userCtrl.getOneUser = asyncErrorHandler(async (req, res, next) => {
 
-    const user = await User.findById(req.user_id, {username: 1, email: 1, roles: 1}).populate({path: "roles", select: "name -_id"});
+    // const user = await User.findById(req.user_id, {username: 1, email: 1, roles: 1}).populate({path: "roles", select: "name -_id"});
+    const user = await User.findById(req.user_id);
 
-    if (!user || req.params.username != user.username) {
+    if ( !user ) {
         const err = new CustomError("User not found", 404);
         return next(err);
     }
 
-    res.status(200).json({ status: "OK", data: {user: user} });
+    res.status(200).json({ status: "OK", data: { user } });
 
 });
 

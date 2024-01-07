@@ -5,7 +5,7 @@ import { verifyToken } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.get('/', [verifyToken], userCtrl.getUsers) // retorna la lista de usuarios sólo al admin
+router.get('/', [verifyToken], userCtrl.getOneUser) // retorna los datos del usuario logueado.
     // .get('/:username', [verifyToken, validateParamUsername ], userCtrl.getOneUser) // retorna 1 usario
     // .put('/', [ verifyToken, validateUpdateUser], userCtrl.updateUser) // comprueba el password actual y actualiza el username y password. La actualizacion la hace el usuario logueado.
     // .delete('/', [ verifyToken , isAdmin, validateDeleteUser], userCtrl.deleteUser); // elimina 1 usuario

@@ -62,7 +62,6 @@ authCtrl.logIn = asyncErrorHandler(async (req, res) => {
     const token = createToken(foundUser._id, 3600); 
     
     const user = {
-        userID: foundUser._id,
         username: foundUser.username,
     }
 

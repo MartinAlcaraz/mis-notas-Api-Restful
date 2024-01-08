@@ -7,7 +7,7 @@ const userCtrl = {};
 
 userCtrl.getUsers = asyncErrorHandler(async (req, res, next) => {
 
-    const users = await User.find({},{ email: 1, username: 1 });
+    const users = await User.find({}, { email: 1, username: 1 });
 
     res.status(200).json({ status: "OK", length: users.length, data: { users } });
 })
@@ -18,19 +18,20 @@ userCtrl.getOneUser = asyncErrorHandler(async (req, res, next) => {
     // const user = await User.findById(req.user_id, {username: 1, email: 1, roles: 1}).populate({path: "roles", select: "name -_id"});
     const user = await User.findById(req.user_id).select("username email createdAt -_id");
 
-    if ( !user ) {
+    if (!user) {
         const err = new CustomError("User not found", 404);
         return next(err);
     }
 
     // convierte Date a String
-    let dateAux = user.createdAt;
-    let dateStr = dateAux.toISOString();
-
-    dateStr = dateStr.slice(0, dateStr.indexOf("T")); // devuelve "2024-01-06"
+    let date = user.createdAt;
+    
+    const [month, day, year] = [date.getMonth() + 1, date.getDate(), date.getFullYear()];
+   
+    let dateStr = `${day}/${month}/${year}`;
 
     const userAux = { username: user.username, email: user.email, createdAt: dateStr };
-
+   
     res.status(200).json({ status: "OK", data: { user: userAux } });
 
 });

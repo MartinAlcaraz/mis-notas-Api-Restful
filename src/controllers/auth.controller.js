@@ -81,10 +81,8 @@ authCtrl.isLogged = asyncErrorHandler(async (req, res) => {
 });
 
 authCtrl.logOut = async (req, res) => {
-    res.clearCookie('access-token')
-    res.cookie('access-token', null);
-
-    res.status(200).json({ status: "OK", message: "Successful logout", data: null });
+    res.clearCookie('access-token');
+    res.status(200).json({ status: "OK", message: "Successful logout", data: null }).end();  // end()
 }
 
 // send an email at the user to reset the password

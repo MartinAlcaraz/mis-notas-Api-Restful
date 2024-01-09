@@ -81,8 +81,15 @@ authCtrl.isLogged = asyncErrorHandler(async (req, res) => {
 });
 
 authCtrl.logOut = async (req, res) => {
-    res.clearCookie('access-token');
-    res.status(200).json({ status: "OK", message: "Successful logout", data: null }).end();  // end()
+    // res.clearCookie('access-token');
+
+    res.cookie('access-token', null, {
+        httpOnly: true,
+        sameSite: 'none' ,
+        secure: "true", //process.env.NODE_ENV == "production", // for cookies enables in client side
+        maxAge: 0, // 0 min,
+    })
+        .status(200).json({ status: "OK", message: "Successful logout", data: null }).end();  // end()
 }
 
 // send an email at the user to reset the password

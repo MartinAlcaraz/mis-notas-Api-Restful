@@ -6,11 +6,11 @@ const notaSchema = new Schema({
         required: true, 
         unique: false, 
         trim: true,
-        minlength: [3, "El titulo debe tener al menos 3 caracteres."],
+        minlength: [1, "El titulo debe tener al menos 1 caracter."],
         maxlength: [50, "El titulo debe tener 50 caracteres o menos."]
     },
     description: { type: String, trim: true,
-        minlength: [3, "La descripcion debe tener al menos 3 caracteres."], 
+        minlength: [0, "La descripcion puede tener 0 caracteres."], 
         maxlength : [2000, "La descripcion debe tener 2000 caracteres o menos."]
     },
 }, {

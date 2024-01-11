@@ -84,7 +84,11 @@ notesCtrl.updateNote = asyncErrorHandler(async (req, res, next) => {
         return next(err);
     }
 
-    if (!title && !description) {
+    console.log('title: ',title);
+    console.log('description: ',description);
+
+
+    if ( title == undefined && description == undefined ) {
         const err = new CustomError("Title or decription must exist in body request.", 400);
         return next(err);
     }

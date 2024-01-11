@@ -1,12 +1,9 @@
 import { body, param, query } from 'express-validator';
-import validateResult from '../helpers/validate.helper.js'
+import validateResult from '../helpers/validate.helper.js';
+
+const regExpObjectId = /[0-9a-f]{24}/;
 
 const validateCreateNote = [
-
-    // body("userId")
-    //     .exists().withMessage("userId property must exists.")
-    //     .isString()
-    //     .isLength({ min: 24, max: 24 }).withMessage("The userId debe tener 24 caracteres"),
 
     body('title')
         .exists()
@@ -28,7 +25,7 @@ const validateGetOneNote = [
     param('id')
         .exists()
         .isString()
-        .isLength({ min: 24, max: 24 }).withMessage('The userId must be an ID'),
+        .matches(regExpObjectId).withMessage("The param id is not a valid ObjectId"),
 
     (req, res, next) => {
         validateResult(req, res, next);
@@ -47,17 +44,17 @@ const validateUpdateNote = [
     param('id')
         .exists()
         .isString()
-        .isLength({ min: 24, max: 24 }).withMessage('The param must be an ID'),
+        .matches(regExpObjectId).withMessage("The param id is not a valid ObjectId"),
 
     body('title')
-        .exists()
+        .optional()
         .isString()
-        .isLength({ min: 3, max: 50 }),
+        .isLength({ min: 1, max: 50 }),
 
     body('description')
-        .exists()
+        .optional()
         .isString()
-        .isLength({ min: 3, max: 2000 }).withMessage('The description must be greater than 3 and less than 2000 characters.'),
+        .isLength({ min: 0, max: 2000 }).withMessage('The description must be greater than 3 and less than 2000 characters.'),
 
     (req, res, next) => {
         validateResult(req, res, next);
@@ -69,8 +66,7 @@ const validateDeleteNote = [
     param('id')
         .exists()
         .isString()
-        .isLength({ min: 24, max: 24 }).withMessage('The param must be an ID'),
-
+        .matches(regExpObjectId).withMessage("The param id is not a valid ObjectId"),
     (req, res, next) => {
         validateResult(req, res, next);
     }

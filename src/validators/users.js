@@ -1,6 +1,8 @@
 import { body, param } from "express-validator";
 import validateResult from "../helpers/validate.helper.js"
 
+const regExpObjectId = /[0-9a-f]{24}/;
+
 // newUsername , password, newPassword
 const validateUpdateUser = [
     body('newUsername')
@@ -29,7 +31,7 @@ const validateDeleteUser = [
     body("userId")
         .exists().withMessage("userId property must exists.")
         .isString()
-        .isLength({min:24, max:24}).withMessage("The userId debe tener 24 caracteres"),
+        .matches(regExpObjectId).withMessage("The userId is not a valid ObjectId"),
 
     (req, res, next) => {
         validateResult(req, res, next);

@@ -84,6 +84,11 @@ notesCtrl.updateNote = asyncErrorHandler(async (req, res, next) => {
         return next(err);
     }
 
+    if (!title && !description) {
+        const err = new CustomError("Title or decription must exist in body request.", 400);
+        return next(err);
+    }
+
     const noteSaved = await Nota.findByIdAndUpdate(note_id, { title, description },
         {
             runValidators: true,  // => para que se ejecuten los validadores del esquema de mongoose

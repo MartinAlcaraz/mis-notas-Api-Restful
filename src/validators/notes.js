@@ -8,12 +8,12 @@ const validateCreateNote = [
     body('title')
         .exists()
         .isString()
-        .isLength({ min: 3, max: 50 }).withMessage('The title must be greater than 3 and less than 50 characters.'),
+        .isLength({ min: 1, max: 50 }).withMessage('The title must be greater than 1 and less than 50 characters.'),
 
     body('description')
         .exists()
         .isString()
-        .isLength({ min: 3, max: 2000 }).withMessage('The description must be greater than 3 and less than 2000 characters.'),
+        .isLength({ min: 0, max: 2000 }).withMessage('The description must be  less than 2000 characters.'),
 
     (req, res, next) => {
         validateResult(req, res, next);
@@ -49,12 +49,12 @@ const validateUpdateNote = [
     body('title')
         .optional()
         .isString()
-        .isLength({ min: 1, max: 50 }),
+        .isLength({ min: 1, max: 50 }).withMessage('The title must be greater than 1 and less than 50 characters.'),
 
     body('description')
         .optional()
         .isString()
-        .isLength({ min: 0, max: 2000 }).withMessage('The description must be greater than 3 and less than 2000 characters.'),
+        .isLength({ min: 0, max: 2000 }).withMessage('The description must be less than 2000 characters.'),
 
     (req, res, next) => {
         validateResult(req, res, next);

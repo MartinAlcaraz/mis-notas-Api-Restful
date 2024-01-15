@@ -53,7 +53,7 @@ notesCtrl.createNote = asyncErrorHandler(async (req, res, next) => {
         return next(err);
     }
 
-    res.status(201).json({ status: 'OK', message: 'Note created.', data: { user: saved } });
+    res.status(201).json({ status: 'OK', message: 'Note created.', data: { newNote: newNote } });
 });
 
 
@@ -112,9 +112,9 @@ notesCtrl.deleteNote = asyncErrorHandler(async (req, res, next) => {
 
     const note_id = req.params.id;
 
-    const noteDeleted = await Nota.findByIdAndDelete(note_id);
+    const deletedNote = await Nota.findByIdAndDelete(note_id);
     
-    if (!noteDeleted) {
+    if (!deletedNote) {
         const err = new CustomError("Could not delete the note because doesnt exist.", 400);
         return next(err);
     }
@@ -132,7 +132,7 @@ notesCtrl.deleteNote = asyncErrorHandler(async (req, res, next) => {
         return next(err);
     }
 
-    res.status(200).json({ status: 'OK', message: 'Note deleted.', data: saved });
+    res.status(200).json({ status: 'OK', message: 'Note deleted.', data: { deletedNote: deletedNote } });
 });
 
 

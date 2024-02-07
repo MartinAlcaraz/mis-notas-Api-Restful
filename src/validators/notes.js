@@ -72,6 +72,20 @@ const validateDeleteNote = [
     }
 ]
 
+const validateShareNote = [
+    param('id')
+        .exists()
+        .isString()
+        .matches(regExpObjectId).withMessage("The param id is not a valid ObjectId"),
+    body('share')
+        .exists().withMessage('Property "share" must exist.')
+        .isBoolean(),
+
+    (req, res, next) => {
+        validateResult(req, res, next);
+    }
+]
+
 const validateSearchNote = [
     query('title')
         .exists().withMessage("Query 'title' must exists.")
@@ -86,5 +100,6 @@ const validateSearchNote = [
 
 module.exports = {
     validateCreateNote, validateGetOneNote, validateGetAllNotes,
-    validateUpdateNote, validateDeleteNote, validateSearchNote
+    validateUpdateNote, validateDeleteNote, validateSearchNote,
+    validateShareNote
 };

@@ -5,6 +5,45 @@ import User from "../models/User";
 
 const notesCtrl = {};
 
+notesCtrl.updateSharedNote = asyncErrorHandler(async (req, res, next) => {
+
+    const note_id = req.params.id;
+    const shareNote = req.body.share;
+
+    const note = await Nota.findById(note_id);
+
+    if (!note) {
+        const err = new CustomError("The note id given does not exist.", 400);
+        return next(err);
+    }
+
+    note.shared = shareNote;
+
+    const saved = await note.save()
+
+    if (!saved) {
+        const err = new CustomError("An error occurred while save the note.", 400);
+        return next(err);
+    }
+
+    res.status(200).json({ status: 'OK', data: { message:"note updated!", note: saved } });
+
+});
+
+notesCtrl.getAllSharedNotes = asyncErrorHandler(async (req, res, next) => {
+    
+    const sharedNotes = await Nota.find({shared: true});
+    console.log(sharedNotes)
+
+    if (!sharedNotes) {
+        const err = new CustomError("An error occurred while finding shared notes.", 400);
+        return next(err);
+    }
+
+    res.status(200).json({ status: 'OK', data: { length: sharedNotes.length, sharedNotes: sharedNotes } });
+
+});
+
 notesCtrl.getAllNotes = asyncErrorHandler(async (req, res, next) => {
 
     const userId = req.user_id;
@@ -37,7 +76,7 @@ notesCtrl.createNote = asyncErrorHandler(async (req, res, next) => {
         return next(err);
     }
     // create note in Nota collection
-    const newNote = await Nota.create({ title, description });
+    const newNote = await Nota.create({ title, description, noteUpdatedAt: new Date(Date.now()) });
 
     if (!newNote) {
         const err = new CustomError("Could not create the note", 400);
@@ -84,16 +123,12 @@ notesCtrl.updateNote = asyncErrorHandler(async (req, res, next) => {
         return next(err);
     }
 
-    console.log('title: ',title);
-    console.log('description: ',description);
-
-
     if ( title == undefined && description == undefined ) {
         const err = new CustomError("Title or decription must exist in body request.", 400);
         return next(err);
     }
 
-    const noteSaved = await Nota.findByIdAndUpdate(note_id, { title, description },
+    const noteSaved = await Nota.findByIdAndUpdate(note_id, { title, description, noteUpdatedAt: new Date(Date.now()) },
         {
             runValidators: true,  // => para que se ejecuten los validadores del esquema de mongoose
             new: true  // =>  para que devuelva el registro nuevo, no el que fue actualizado
@@ -104,7 +139,7 @@ notesCtrl.updateNote = asyncErrorHandler(async (req, res, next) => {
         const err = new CustomError("Could not update the note", 400);
         return next(err);
     }
-
+    
     res.status(200).json({ status: 'OK', message: 'Note updated.', data: { newNote: noteSaved } });
 });
 

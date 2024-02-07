@@ -6,15 +6,24 @@ const notaSchema = new Schema({
         required: true, 
         unique: false, 
         trim: true,
-        minlength: [1, "El titulo debe tener al menos 1 caracter."],
+        minlength: [0, ""],
         maxlength: [50, "El titulo debe tener 50 caracteres o menos."]
     },
-    description: { type: String, trim: true,
+    description: { 
+        type: String, 
+        trim: true,
         minlength: [0, "La descripcion puede tener 0 caracteres."], 
         maxlength : [2000, "La descripcion debe tener 2000 caracteres o menos."]
     },
+    // only updates date when note text changes
+    noteUpdatedAt : { type: Date, required: true},
+    shared: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
 }, {
-    timestamps: true,
+    timestamps: false,
     versionKey: false // en cada creacion de objeto no se guarda la version __v
 });
 
@@ -28,10 +37,9 @@ notaSchema.pre('save', function (next) {
 
 // execute after the document has been created with save or create methods.
 notaSchema.post('save', function (doc, next) {
-    const text = 'The document "' + doc.title + '" has been created';
-    console.log(text);
+    // const text = 'The document "' + doc.title + '" has been created';
+    // console.log('post save ');
     next();
 });
-
 
 export default model("Nota", notaSchema); 

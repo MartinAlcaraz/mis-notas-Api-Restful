@@ -1,5 +1,4 @@
 import User from "../models/User.js";
-import Rol from "../models/Rol.js"
 import createToken from "../Utils/createToken.js";
 import asyncErrorHandler from "../Utils/asyncErrorHandler.js";
 import mail from "../Utils/email.js";
@@ -58,8 +57,8 @@ authCtrl.logIn = asyncErrorHandler(async (req, res) => {
     if (!validPassword) {
         return res.status(401).json({ status: "FAILED", message: "Invalid email or password" });
     }
-    // (user id , expiration in seconds); 1hour == 3600 seconds
-    const token = createToken(foundUser._id, 3600); 
+    // (user id , expiration in seconds); 1hour == 3600 seconds => 30 days == 2.592.000
+    const token = createToken(foundUser._id, 2592000); // 30 days in seconds
     
     const user = {
         username: foundUser.username,
@@ -69,7 +68,7 @@ authCtrl.logIn = asyncErrorHandler(async (req, res) => {
         httpOnly: true,
         sameSite: 'none' ,
         secure: "true", //process.env.NODE_ENV == "production", // for cookies enables in client side
-        maxAge: 3600 * 1000, // 60 minutos en milisegundos
+        maxAge: 2592000000, // 30 dias en milisegundos
     })
         .status(200).json({ status: "OK", message: "Successful login ", data: { user } });
 

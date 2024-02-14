@@ -123,10 +123,10 @@ notesCtrl.updateNote = asyncErrorHandler(async (req, res, next) => {
         return next(err);
     }
 
-    if ( title == undefined && description == undefined ) {
-        const err = new CustomError("Title or decription must exist in body request.", 400);
-        return next(err);
-    }
+    // if ( title == undefined && description == undefined ) {
+    //     const err = new CustomError("Title or decription must exist in body request.", 400);
+    //     return next(err);
+    // }
 
     const noteSaved = await Nota.findByIdAndUpdate(note_id, { title, description, noteUpdatedAt: new Date(Date.now()) },
         {

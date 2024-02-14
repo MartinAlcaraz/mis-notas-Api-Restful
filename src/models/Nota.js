@@ -3,10 +3,10 @@ import { Schema, model } from 'mongoose';
 const notaSchema = new Schema({
     title: {
         type: String, 
-        required: true, 
+        required: false, 
         unique: false, 
         trim: true,
-        minlength: [0, ""],
+        minlength: [0, "El titulo puede tener 0 caracteres."],
         maxlength: [50, "El titulo debe tener 50 caracteres o menos."]
     },
     description: { 

@@ -49,7 +49,7 @@ const validateUpdateNote = [
     body('title')
         .optional()
         .isString()
-        .isLength({ min: 1, max: 50 }).withMessage('The title must be greater than 1 and less than 50 characters.'),
+        .isLength({ min: 0, max: 50 }).withMessage('The title must be less than 50 characters.'),
 
     body('description')
         .optional()
